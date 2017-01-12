@@ -21,8 +21,8 @@
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Turn On"
-        android:id="@+id/button"
+        android:text="Papiermessung"
+        android:id="@+id/btn_paper"
         android:clickable="true"
         android:onClick="on"
         android:layout_below="@+id/textview"
@@ -31,9 +31,9 @@
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Get visible"
+        android:text="LED an"
         android:onClick="visible"
-        android:id="@+id/button2"
+        android:id="@+id/btn_ledOn"
         android:layout_below="@+id/textview"
         android:layout_centerHorizontal="true" />
 
@@ -43,16 +43,16 @@
         android:text="Find devices"
         android:onClick="find"
         android:id="@+id/button3"
-        android:layout_below="@+id/button2"
-        android:layout_alignEnd="@+id/button2" />
+        android:layout_below="@+id/btn_ledOn"
+        android:layout_alignEnd="@+id/btn_ledOn" />
 
 
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="turn off"
+        android:text="Reinigungszeiterfassung"
         android:onClick="off"
-        android:id="@+id/button4"
+        android:id="@+id/btn_led"
         android:layout_below="@+id/textview"
         android:layout_alignParentStart="true" />
 
@@ -66,8 +66,8 @@
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="List Devices"
-        android:id="@+id/button5"
+        android:text="LED Aus"
+        android:id="@+id/btn_ledOff"
         android:layout_above="@+id/listView"
         android:layout_alignParentStart="true"
         android:onClick="list" />
@@ -75,9 +75,9 @@
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Exit"
+        android:text="Abstandmessung"
         android:onClick="exit"
-        android:id="@+id/button6"
-        android:layout_below="@+id/button"
-        android:layout_alignStart="@+id/button" />
+        android:id="@+id/btn_hc"
+        android:layout_below="@+id/btn_paper"
+        android:layout_alignStart="@+id/btn_paper" />
 </RelativeLayout>

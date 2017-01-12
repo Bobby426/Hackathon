@@ -32,8 +32,15 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> BTArrayAdapter;
     private Handler handler = new Handler();
     private Timer timer = new Timer();
+    private Handler handler2 = new Handler();
+    private Timer timer2 = new Timer();
     private Button findBtn;
     private DataSource dataSource;
+    Button btn_led;
+    Button btn_ledOff;
+    Button btn_ledOn;
+    Button btn_hc;
+    Button btn_paper;
 
     final BroadcastReceiver bReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -43,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 BTArrayAdapter.add(device.getName() + "\n" + device.getAddress());
-                //list.add(device.getAddress());
+                list.add(device.getAddress());
                 Beacon beacon = dataSource.findBeacon(device.getAddress());
                 if (beacon.getBeschreibung() != "") {
                     new SendToDatabase().execute("1", "leer");
@@ -59,6 +66,74 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        btn_led = (Button) findViewById(R.id.btn_led);
+        btn_ledOn = (Button) findViewById(R.id.btn_ledOn);
+        btn_ledOff = (Button) findViewById(R.id.btn_ledOff);
+
+        btn_hc = (Button) findViewById(R.id.btn_hc);
+        btn_paper = (Button) findViewById(R.id.btn_paper);
+
+        btn_hc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HC_SR04 hc_modul = new HC_SR04();
+                hc_modul.start();
+            }
+        });
+
+
+
+        btn_led.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View viewA){
+                //Quelltext für blaue LED
+
+                LED blau = new LED(232);
+                try{
+                    blau.blinken(2);
+                }catch(Throwable t){
+                    t.printStackTrace();
+                }
+
+
+            }
+        });
+
+        btn_ledOn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View viewA){
+                LED testLED = new LED(235);
+                try{
+                    testLED.LEDon();
+                }catch(Throwable t){
+                    t.printStackTrace();
+                }
+
+            }
+        });
+
+        btn_ledOff.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View viewA){
+                LED testLED = new LED(235);
+                try{
+                    testLED.LEDOff();
+                }catch(Throwable t){
+                    t.printStackTrace();
+                }
+            }
+        });
+
+        btn_paper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HC_SR04_Paper paper_measure = new HC_SR04_Paper();
+                paper_measure.start();
+            }
+        });
+
+
+
+
+
+
 
         dataSource = new DataSource(this);
         dataSource.open();
@@ -67,7 +142,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter(); // Instanz eines DefaultAdapters (Zugriff auf das Bluetooth)
+
+
+        myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (!myBluetoothAdapter.isEnabled()) {
+            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(turnOn, 0);
+            Toast.makeText(getApplicationContext(), "Turned on", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Already on", Toast.LENGTH_LONG).show();
+        }// Instanz eines DefaultAdapters (Zugriff auf das Bluetooth)
         myListView = (ListView) findViewById(R.id.listView);
         findBtn = (Button) findViewById(R.id.button3);
         // create the arrayAdapter that contains the BTDevices, and set it to the ListView
@@ -87,19 +171,10 @@ public class MainActivity extends AppCompatActivity {
         timer.schedule(tt,0, 20000);
 
 
+
     }
 
 
-    public void off(View v) {
-        myBluetoothAdapter.disable();
-        Toast.makeText(getApplicationContext(), "Turned off", Toast.LENGTH_LONG).show();
-    }
-
-
-    public void visible(View v) {
-        Intent getVisible = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        startActivityForResult(getVisible, 0);
-    }
 
     public void on(View v) {
         if (!myBluetoothAdapter.isEnabled()) {
@@ -132,16 +207,6 @@ public class MainActivity extends AppCompatActivity {
         // }
     }
 
-    public void list(View view) {
-        BTArrayAdapter.clear();
-        pairedDevices = myBluetoothAdapter.getBondedDevices();
-        // put it's one to the adapter
-        for (BluetoothDevice device : pairedDevices)
-            BTArrayAdapter.add(device.getName() + "\n" + device.getAddress());
-        Toast.makeText(getApplicationContext(), "Show Paired Devices", Toast.LENGTH_SHORT).show();
-
-
-    }
 
     public void exit() {
         unregisterReceiver(bReceiver);
