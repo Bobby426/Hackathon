@@ -21,7 +21,7 @@
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Papiermessung"
+        android:text="Papier"
         android:id="@+id/btn_paper"
         android:clickable="true"
         android:onClick="on"
@@ -80,4 +80,12 @@
         android:id="@+id/btn_hc"
         android:layout_below="@+id/btn_paper"
         android:layout_alignStart="@+id/btn_paper" />
+
+    <Button
+        android:text="Seife"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_ledOn"
+        android:layout_alignEnd="@+id/btn_ledOn"
+        android:id="@+id/btn_seife" />
 </RelativeLayout>

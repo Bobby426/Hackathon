@@ -66,7 +66,6 @@ public class DataSource {
             macAdress= cursor.getString(idMacAdress);
             description = cursor.getString(idDescription);
         }catch (CursorIndexOutOfBoundsException e){
-            Log.d(LOG_TAG, e.toString());
             macAdress = "";
             description = "";
         }

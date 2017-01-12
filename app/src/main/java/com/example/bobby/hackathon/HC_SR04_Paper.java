@@ -25,9 +25,10 @@ public class HC_SR04_Paper extends Thread{
     ArrayList<Integer> list;
     SortedMap<Integer,Integer> map;
     private int  MIN;
+    LED lc_led;
 
-
-    public HC_SR04_Paper(){
+    public HC_SR04_Paper(LED lc_led){
+        this.lc_led = lc_led;
 
         finaled = 200.0f;
         list = new ArrayList<Integer>();
@@ -194,15 +195,18 @@ public class HC_SR04_Paper extends Thread{
             while (true){
 
                int cm = getFuellMenge();
+                new PaperToDatabase().execute("2", Integer.toString(cm));
 
-                if(cm>= MIN){
+                if(cm>= MIN-1){
                     System.out.println("" + cm + "cm es ist leer ");
+                    lc_led.LEDon();
                 }else{
+                    lc_led.LEDOff();
                     System.out.println("Es werden " + cm + "cm gemessen und in die DB gepostet");
                 }
 
 
-                Thread.sleep(1000);
+                Thread.sleep(10000);
             }
 
 

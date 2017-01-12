@@ -6,7 +6,9 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created on 11.01.2017.
@@ -16,6 +18,7 @@ public class HC_SR04 extends Thread {
     DataOutputStream os = null;
     DataInputStream is = null;
     BufferedReader bfr = null;
+    LED lc_led;
 
     private long startzeit = 0, endzeit = 0, dauer;
     private float finaled, oldd;
@@ -24,8 +27,8 @@ public class HC_SR04 extends Thread {
 
 
     //Konstruktor
-    public HC_SR04() {
-
+    public HC_SR04(LED lc_led) {
+        this.lc_led = lc_led;
         finaled = 200.0f;
 
 
@@ -170,6 +173,12 @@ public class HC_SR04 extends Thread {
                          System.out.println("Aktueller Messwert: " + distance);
                          System.out.println("Und es wurde eine Person gezählt: " +counter);
                          canMeasure= false;
+                         lc_led.blinken(3);
+                         String now = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
+
+                         new UsernumberToDatabase().execute("4", Integer.toString(counter),now);
+
+
                          Thread.sleep(1900);
                      }
                      else{// kein Besucher --> Referenz

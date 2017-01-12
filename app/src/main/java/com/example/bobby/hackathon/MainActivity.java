@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.util.ArraySet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     Button btn_ledOn;
     Button btn_hc;
     Button btn_paper;
+    private ArraySet<String> beaconList = new ArraySet<>();
+    private ArraySet<String> blueList = new ArraySet<>();
 
     final BroadcastReceiver bReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -50,12 +53,15 @@ public class MainActivity extends AppCompatActivity {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 BTArrayAdapter.add(device.getName() + "\n" + device.getAddress());
-                list.add(device.getAddress());
+                //list.add(device.getAddress());
                 Beacon beacon = dataSource.findBeacon(device.getAddress());
                 if (beacon.getBeschreibung() != "") {
                     new SendToDatabase().execute("1", "leer");
+                    System.out.println("bin drin");
+                    beaconList.add(device.getAddress());
                     Toast.makeText(getApplicationContext(), beacon.getBeschreibung(), Toast.LENGTH_SHORT).show();
                 }
+                blueList.add(device.getAddress());
                 BTArrayAdapter.notifyDataSetChanged();
             }
         }
@@ -69,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
         btn_led = (Button) findViewById(R.id.btn_led);
         btn_ledOn = (Button) findViewById(R.id.btn_ledOn);
         btn_ledOff = (Button) findViewById(R.id.btn_ledOff);
+        final LED blau = new LED(232);
+        final LED testLED = new LED(235);
 
         btn_hc = (Button) findViewById(R.id.btn_hc);
         btn_paper = (Button) findViewById(R.id.btn_paper);
@@ -76,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         btn_hc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HC_SR04 hc_modul = new HC_SR04();
+                HC_SR04 hc_modul = new HC_SR04(blau);
                 hc_modul.start();
             }
         });
@@ -87,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View viewA){
                 //Quelltext für blaue LED
 
-                LED blau = new LED(232);
+                //LED blau = new LED(232);
                 try{
                     blau.blinken(2);
                 }catch(Throwable t){
@@ -100,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
         btn_ledOn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View viewA){
-                LED testLED = new LED(235);
+
                 try{
                     testLED.LEDon();
                 }catch(Throwable t){
@@ -124,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         btn_paper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HC_SR04_Paper paper_measure = new HC_SR04_Paper();
+                HC_SR04_Paper paper_measure = new HC_SR04_Paper(testLED);
                 paper_measure.start();
             }
         });
@@ -168,10 +176,29 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         };
-        timer.schedule(tt,0, 20000);
+
+        TimerTask tt2 = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        check();
+                    }
+                });
+            }
+        };
+        timer.schedule(tt,0, 10000);
+        timer.schedule(tt2,0, 10000);
 
 
 
+    }
+
+    public void check(){
+        if(beaconList.size()==0){
+            new SendToDatabase().execute("1", "voll");
+        }
     }
 
 
@@ -195,9 +222,22 @@ public class MainActivity extends AppCompatActivity {
         //}
         //else {
 
+
+
         Toast.makeText(getApplicationContext(), "Find Devices", Toast.LENGTH_LONG).show();
 
         BTArrayAdapter.clear();
+
+        if(blueList.size()>0) {
+            if (beaconList.size() > 0) {
+                if (blueList.contains((beaconList.valueAt(0)))) {
+
+                } else {
+                    beaconList.clear();
+                }
+                blueList.clear();
+            }
+        }
         int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
