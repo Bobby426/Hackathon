@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 //list.add(device.getAddress());
                 Beacon beacon = dataSource.findBeacon(device.getAddress());
                 if (beacon.getBeschreibung() != "") {
+                    new SendToDatabase().execute("1", "leer");
                     Toast.makeText(getApplicationContext(), beacon.getBeschreibung(), Toast.LENGTH_SHORT).show();
                 }
                 BTArrayAdapter.notifyDataSetChanged();
