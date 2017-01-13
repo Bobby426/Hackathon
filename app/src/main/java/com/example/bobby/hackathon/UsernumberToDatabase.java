@@ -44,7 +44,8 @@ public class UsernumberToDatabase extends AsyncTask {
 
         try {
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://192.168.0.6/Nutzeranzahl.php");
+            // Bei Bedarf IP-Adresse austauschen
+            HttpPost httppost = new HttpPost("http://192.168.0.5/Nutzeranzahl.php");
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();

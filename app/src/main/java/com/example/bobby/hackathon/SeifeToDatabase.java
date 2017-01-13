@@ -40,10 +40,11 @@ public class SeifeToDatabase extends AsyncTask {
 
 
 
-
+        // Bei Bedarf IP-Adresse austauschen
         try {
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://192.168.0.6/Seifenspender.php");
+            // Bei Bedarf IP-Adresse austauschen
+            HttpPost httppost = new HttpPost("http://192.168.0.5/Seifenspender.php");
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();

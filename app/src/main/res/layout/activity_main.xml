@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.bobby.hackathon.MainActivity">
 
-    <TextView android:text="Bluetooth Example"
+    <TextView android:text="Hackathon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textview"
@@ -21,40 +21,21 @@
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Papier"
-        android:id="@+id/btn_paper"
-        android:clickable="true"
-        android:onClick="on"
-        android:layout_below="@+id/textview"
-        android:layout_alignEnd="@+id/listView" />
-
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
         android:text="LED an"
         android:onClick="visible"
         android:id="@+id/btn_ledOn"
         android:layout_below="@+id/textview"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:text="Find devices"
-        android:onClick="find"
-        android:id="@+id/button3"
-        android:layout_below="@+id/btn_ledOn"
-        android:layout_alignEnd="@+id/btn_ledOn" />
-
 
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Reinigungszeiterfassung"
+        android:text="Seifen spender"
         android:onClick="off"
-        android:id="@+id/btn_led"
-        android:layout_below="@+id/textview"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/btn_seife"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textview" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -75,17 +56,29 @@
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Abstandmessung"
+        android:text="Benutzeranzahl"
         android:onClick="exit"
         android:id="@+id/btn_hc"
         android:layout_below="@+id/btn_paper"
         android:layout_alignStart="@+id/btn_paper" />
 
     <Button
-        android:text="Seife"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_ledOn"
-        android:layout_alignEnd="@+id/btn_ledOn"
-        android:id="@+id/btn_seife" />
+        android:text="WC-Papier"
+        android:onClick="find"
+        android:id="@+id/button3"
+        android:layout_below="@+id/btn_ledOn"
+        android:layout_alignStart="@+id/btn_ledOn" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Papier spender"
+        android:id="@+id/btn_paper"
+        android:clickable="true"
+        android:onClick="on"
+        android:layout_below="@+id/textview"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private Timer timer2 = new Timer();
     private Button findBtn;
     private DataSource dataSource;
-    Button btn_led;
+    Button btn_seife;
     Button btn_ledOff;
     Button btn_ledOn;
     Button btn_hc;
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btn_led = (Button) findViewById(R.id.btn_led);
+        btn_seife = (Button) findViewById(R.id.btn_seife);
         btn_ledOn = (Button) findViewById(R.id.btn_ledOn);
         btn_ledOff = (Button) findViewById(R.id.btn_ledOff);
         final LED blau = new LED(232);
@@ -91,20 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        btn_led.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View viewA){
-                //Quelltext für blaue LED
 
-                //LED blau = new LED(232);
-                try{
-                    blau.blinken(2);
-                }catch(Throwable t){
-                    t.printStackTrace();
-                }
-
-
-            }
-        });
 
         btn_ledOn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View viewA){
@@ -134,6 +121,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 HC_SR04_Paper paper_measure = new HC_SR04_Paper(testLED);
                 paper_measure.start();
+            }
+        });
+
+
+        btn_seife.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View viewA){
+                HC_SR04Seife hc_modul = new HC_SR04Seife();
+                hc_modul.start();
             }
         });
 

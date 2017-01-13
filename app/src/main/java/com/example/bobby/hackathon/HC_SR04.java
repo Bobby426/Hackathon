@@ -130,6 +130,7 @@ public class HC_SR04 extends Thread {
     public void run() {
         System.out.println("Das Modul HC_SR04 wird ausgeführt");
 
+
         list = new ArrayList<Integer>();
 
         try{
@@ -177,6 +178,7 @@ public class HC_SR04 extends Thread {
                          String now = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
 
                          new UsernumberToDatabase().execute("4", Integer.toString(counter),now);
+
 
 
                          Thread.sleep(1900);

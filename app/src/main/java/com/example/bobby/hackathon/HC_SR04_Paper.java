@@ -196,6 +196,7 @@ public class HC_SR04_Paper extends Thread{
 
                int cm = getFuellMenge();
                 new PaperToDatabase().execute("2", Integer.toString(cm));
+                //new SeifeToDatabase().execute("3","0");
 
                 if(cm>= MIN-1){
                     System.out.println("" + cm + "cm es ist leer ");
